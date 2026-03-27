@@ -1,0 +1,30 @@
+server:
+  port: 8080
+
+spring:
+  cloud:
+    gateway:
+      server:
+        webflux:
+          routes:
+
+            - id: user-service
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/user-service/**
+              filters:
+                - RewritePath=/user-service/(?<segment>.*), /${segment}
+
+            - id: session-service
+              uri: lb://SESSION-SERVICE
+              predicates:
+                - Path=/session-service/**
+              filters:
+                - RewritePath=/session-service/(?<segment>.*), /${segment}
+
+            - id: learning-service
+              uri: lb://LEARNING-SERVICE
+              predicates:
+                - Path=/learning-service/**
+              filters:
+                - RewritePath=/learning-service/(?<segment>.*), /${segment}
