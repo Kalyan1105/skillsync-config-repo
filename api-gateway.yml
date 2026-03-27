@@ -12,17 +12,13 @@ spring:
               uri: lb://USER-SERVICE
               predicates:
                 - Path=/auth/**,/users/**,/mentors/**
-
+                
             - id: session-service
               uri: lb://SESSION-SERVICE
               predicates:
-                - Path=/session-service/**
-              filters:
-                - RewritePath=/session-service/(?<segment>.*), /${segment}
-
+                - Path=/sessions/**
+           
             - id: learning-service
               uri: lb://LEARNING-SERVICE
               predicates:
-                - Path=/learning-service/**
-              filters:
-                - RewritePath=/learning-service/(?<segment>.*), /${segment}
+                - Path=/skills/**,/groups/**,/reviews/**
