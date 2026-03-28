@@ -7,66 +7,68 @@ spring:
 
   cloud:
     gateway:
-      routes:
-        # ================= USER SERVICE =================
-        - id: auth-route
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/auth/**
+      server:
+        webflux:
+          routes:
+            # ================= USER SERVICE =================
+            - id: auth-route
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/auth/**
 
-        - id: users-route
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/users/**
+            - id: users-route
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/users/**
 
-        - id: mentors-route
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/mentors/**
+            - id: mentors-route
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/mentors/**
 
-        # ================= SESSION SERVICE =================
-        - id: session-route
-          uri: lb://SESSION-SERVICE
-          predicates:
-            - Path=/sessions/**
+            # ================= SESSION SERVICE =================
+            - id: session-route
+              uri: lb://SESSION-SERVICE
+              predicates:
+                - Path=/sessions/**
 
-        # ================= LEARNING SERVICE =================
-        - id: skills-route
-          uri: lb://LEARNING-SERVICE
-          predicates:
-            - Path=/skills/**
+            # ================= LEARNING SERVICE =================
+            - id: skills-route
+              uri: lb://LEARNING-SERVICE
+              predicates:
+                - Path=/skills/**
 
-        - id: groups-route
-          uri: lb://LEARNING-SERVICE
-          predicates:
-            - Path=/groups/**
+            - id: groups-route
+              uri: lb://LEARNING-SERVICE
+              predicates:
+                - Path=/groups/**
 
-        - id: reviews-route
-          uri: lb://LEARNING-SERVICE
-          predicates:
-            - Path=/reviews/**
+            - id: reviews-route
+              uri: lb://LEARNING-SERVICE
+              predicates:
+                - Path=/reviews/**
 
-        # ================= SWAGGER AGGREGATION MAPS =================
-        - id: swagger-user
-          uri: lb://USER-SERVICE
-          predicates:
-            - Path=/v3/api-docs/user
-          filters:
-            - RewritePath=/v3/api-docs/user, /v3/api-docs
+            # ================= SWAGGER AGGREGATION MAPS =================
+            - id: swagger-user
+              uri: lb://USER-SERVICE
+              predicates:
+                - Path=/v3/api-docs/user
+              filters:
+                - RewritePath=/v3/api-docs/user, /v3/api-docs
 
-        - id: swagger-session
-          uri: lb://SESSION-SERVICE
-          predicates:
-            - Path=/v3/api-docs/session
-          filters:
-            - RewritePath=/v3/api-docs/session, /v3/api-docs
+            - id: swagger-session
+              uri: lb://SESSION-SERVICE
+              predicates:
+                - Path=/v3/api-docs/session
+              filters:
+                - RewritePath=/v3/api-docs/session, /v3/api-docs
 
-        - id: swagger-learning
-          uri: lb://LEARNING-SERVICE
-          predicates:
-            - Path=/v3/api-docs/learning
-          filters:
-            - RewritePath=/v3/api-docs/learning, /v3/api-docs
+            - id: swagger-learning
+              uri: lb://LEARNING-SERVICE
+              predicates:
+                - Path=/v3/api-docs/learning
+              filters:
+                - RewritePath=/v3/api-docs/learning, /v3/api-docs
 
 # ================= SWAGGER DROP-DOWN UI =================
 springdoc:
