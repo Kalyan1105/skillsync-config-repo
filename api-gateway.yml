@@ -7,57 +7,85 @@ spring:
 
   cloud:
     gateway:
-      server:
-        webflux:
-          routes:
+      routes:
+        # ================= USER SERVICE =================
+        - id: auth-route
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/auth/**
 
-            # ================= USER SERVICE =================
-            - id: auth-route
-              uri: lb://USER-SERVICE
-              predicates:
-                - Path=/auth/**
+        - id: users-route
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/users/**
 
-            - id: users-route
-              uri: lb://USER-SERVICE
-              predicates:
-                - Path=/users/**
+        - id: mentors-route
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/mentors/**
 
-            - id: mentors-route
-              uri: lb://USER-SERVICE
-              predicates:
-                - Path=/mentors/**
+        # ================= SESSION SERVICE =================
+        - id: session-route
+          uri: lb://SESSION-SERVICE
+          predicates:
+            - Path=/sessions/**
 
+        # ================= LEARNING SERVICE =================
+        - id: skills-route
+          uri: lb://LEARNING-SERVICE
+          predicates:
+            - Path=/skills/**
 
-            # ================= SESSION SERVICE =================
-            - id: session-route
-              uri: lb://SESSION-SERVICE
-              predicates:
-                - Path=/sessions/**
+        - id: groups-route
+          uri: lb://LEARNING-SERVICE
+          predicates:
+            - Path=/groups/**
 
+        - id: reviews-route
+          uri: lb://LEARNING-SERVICE
+          predicates:
+            - Path=/reviews/**
 
-            # ================= LEARNING SERVICE =================
-            - id: skills-route
-              uri: lb://LEARNING-SERVICE
-              predicates:
-                - Path=/skills/**
+        # ================= SWAGGER AGGREGATION MAPS =================
+        - id: swagger-user
+          uri: lb://USER-SERVICE
+          predicates:
+            - Path=/v3/api-docs/user
+          filters:
+            - RewritePath=/v3/api-docs/user, /v3/api-docs
 
-            - id: groups-route
-              uri: lb://LEARNING-SERVICE
-              predicates:
-                - Path=/groups/**
+        - id: swagger-session
+          uri: lb://SESSION-SERVICE
+          predicates:
+            - Path=/v3/api-docs/session
+          filters:
+            - RewritePath=/v3/api-docs/session, /v3/api-docs
 
-            - id: reviews-route
-              uri: lb://LEARNING-SERVICE
-              predicates:
-                - Path=/reviews/**
+        - id: swagger-learning
+          uri: lb://LEARNING-SERVICE
+          predicates:
+            - Path=/v3/api-docs/learning
+          filters:
+            - RewritePath=/v3/api-docs/learning, /v3/api-docs
 
+# ================= SWAGGER DROP-DOWN UI =================
+springdoc:
+  api-docs:
+    enabled: true
+  swagger-ui:
+    urls:
+      - name: User Service
+        url: /v3/api-docs/user
+      - name: Session Service
+        url: /v3/api-docs/session
+      - name: Learning Service
+        url: /v3/api-docs/learning
 
 # ================= EUREKA =================
 eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka
-
   instance:
     hostname: localhost
     prefer-ip-address: true
@@ -68,7 +96,6 @@ management:
   tracing:
     sampling:
       probability: 1.0
-
   zipkin:
     tracing:
       endpoint: http://localhost:9411/api/v2/spans
