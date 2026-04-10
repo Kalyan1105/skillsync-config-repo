@@ -1,3 +1,4 @@
+# api-gateway.yml
 server:
   port: 8080
 
@@ -87,11 +88,10 @@ springdoc:
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka
+      defaultZone: http://eureka-server:8761/eureka
   instance:
-    hostname: localhost
+    hostname: api-gateway
     prefer-ip-address: true
-    ip-address: 127.0.0.1
 
 # ================= ZIPKIN =================
 management:
@@ -100,4 +100,4 @@ management:
       probability: 1.0
   zipkin:
     tracing:
-      endpoint: http://localhost:9411/api/v2/spans
+      endpoint: http://zipkin:9411/api/v2/spans
